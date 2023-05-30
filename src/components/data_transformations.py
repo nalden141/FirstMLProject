@@ -27,13 +27,13 @@ class DataTransformation:
         This function si responsible for data trnasformation
         '''
         try:
-            numerical_columns = ["writing_score", "reading_score"]
+            numerical_columns = ["writing score", "reading score"]
             categorical_columns = [
                 "gender",
-                "race_ethnicity",
-                "parental_level_of_education",
+                "race/ethnicity",
+                "parental level of education",
                 "lunch",
-                "test_preparation_course",
+                "test preparation course",
             ]
 
             num_pipeline= Pipeline(
@@ -61,25 +61,20 @@ class DataTransformation:
                 [
                 ("num_pipeline",num_pipeline,numerical_columns),
                 ("cat_pipelines",cat_pipeline,categorical_columns)
-
                 ]
-
 
             )
 
             return preprocessor
-        
         except Exception as e:
             raise CustomException(e,sys)
         
     def initiate_data_transformation(self,train_path,test_path):
-
         try:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
 
             logging.info("Read train and test data completed")
-
             logging.info("Obtaining preprocessing object")
 
             preprocessing_obj=self.get_data_transformer_object()
