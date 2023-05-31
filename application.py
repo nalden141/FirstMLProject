@@ -1,20 +1,17 @@
 from flask import Flask,request,render_template
 import numpy as np
 import pandas as pd
-
 from sklearn.preprocessing import StandardScaler
 from src.pipeline.predict_pipeline import CustomData,PredictPipeline
 
-application=Flask(__name__)
+app=Flask(__name__)
 
-app=application
-
-## Route for a home page
-
+# Route for a home page
 @app.route('/')
 def index():
     return render_template('index.html') 
 
+# Route for a predictdata page
 @app.route('/predictdata',methods=['GET','POST'])
 def predict_datapoint():
     if request.method=='GET':
@@ -28,8 +25,7 @@ def predict_datapoint():
             test_preparation_course=request.form.get('test preparation course'),
             reading_score=float(request.form.get('writing score')),
             writing_score=float(request.form.get('reading score'))
-
-        )
+            )
         pred_df=data.get_data_as_data_frame()
         print(pred_df)
         print("Before Prediction")
@@ -39,7 +35,6 @@ def predict_datapoint():
         results=predict_pipeline.predict(pred_df)
         print("after Prediction")
         return render_template('home.html',results=results[0])
-    
 
 if __name__=="__main__":
-    app.run(host="0.0.0.0")        
+    app.run(host="0.0.0.0")
