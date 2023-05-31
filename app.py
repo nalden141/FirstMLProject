@@ -1,11 +1,9 @@
 from flask import Flask,request,render_template
 import numpy as np
 import pandas as pd
+
 from sklearn.preprocessing import StandardScaler
 from src.pipeline.predict_pipeline import CustomData,PredictPipeline
-import os
-from src.exception import CustomException
-
 
 application=Flask(__name__)
 
@@ -24,12 +22,12 @@ def predict_datapoint():
     else:
         data=CustomData(
             gender=request.form.get('gender'),
-            race_ethnicity=request.form.get('ethnicity'),
+            race_ethnicity=request.form.get('race/ethnicity'),
             parental_level_of_education=request.form.get('parental level of education'),
             lunch=request.form.get('lunch'),
             test_preparation_course=request.form.get('test preparation course'),
-            reading_score=str(request.form.get('reading score')),
-            writing_score=str(request.form.get('writing score'))
+            reading_score=float(request.form.get('writing score')),
+            writing_score=float(request.form.get('reading score'))
 
         )
         pred_df=data.get_data_as_data_frame()
@@ -41,6 +39,7 @@ def predict_datapoint():
         results=predict_pipeline.predict(pred_df)
         print("after Prediction")
         return render_template('home.html',results=results[0])
+    
 
 if __name__=="__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0")        
